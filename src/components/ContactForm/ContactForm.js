@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContacts } from 'redux/selectors';
-import { formSubmit } from 'redux/dataSlice';
+import { contactsSelect } from '../../redux/selectors';
+import { postContactThunk } from '../../redux/phonebookThunk';
 import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-const contacts = useSelector(getContacts);
+const contacts = useSelector(contactsSelect);
 const dispatch = useDispatch();
 
 
@@ -48,7 +48,7 @@ const dispatch = useDispatch();
     if (contacts.find(contact => contact.name === name)) {
         nameInTheList();
       } else {
-        dispatch(formSubmit({ name, number }));
+        dispatch(postContactThunk({ name, number }));
 
     stateReset();
   }

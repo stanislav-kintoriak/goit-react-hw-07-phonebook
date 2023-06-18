@@ -1,24 +1,21 @@
 import { ListItem } from './ListItem/ListItem';
-import { useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/selectors';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import {  filteredContactsSelect } from 'redux/selectors';
+import { getContactsThunk } from 'redux/phonebookThunk';
+
 import css from './ContactsList.module.css';
 
 export const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const filterValue = useSelector(getFilter);
+  
+  const dispatch = useDispatch()
 
-  // console.log(contacts);
-  // console.log(filterValue);
 
-  const getFoundedContacts = () => {
-    const filterInLowercase = filterValue.toLowerCase();
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
 
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filterInLowercase)
-    );
-  };
-
-  const renderList = getFoundedContacts();
+  const renderList = useSelector(filteredContactsSelect);
 
   return (
     <ul className={css.contact__list}>
